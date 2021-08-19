@@ -1,25 +1,28 @@
 import {
   defineComponent,
+  onMounted,
   ref,
   useContext,
-  useFetch,
 } from '@nuxtjs/composition-api'
+import type { Room } from '~/api/rooms'
 import type { User } from '~/api/users'
-import { Tutorial } from '~/components/Tutorial'
+import { Rooms } from '~/components/Rooms'
 import styles from './styles.module.css'
 
 export default defineComponent({
   setup() {
     const ctx = useContext()
     const users = ref<User[]>()
+    const rooms = ref<Room[]>()
 
-    useFetch(async () => {
-      users.value = await ctx.$api.users.$get()
+    onMounted(async () => {
+      users.value = (await ctx.$api.users.$get()).data
+      rooms.value = await ctx.$api.rooms.$get()
     })
 
     return () => (
       <div class={styles.sampleFont}>
-        {users.value && <Tutorial users={users.value} />}
+        {rooms.value && <Rooms rooms={rooms.value} />}
       </div>
     )
   },
