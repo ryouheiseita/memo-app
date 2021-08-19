@@ -1,5 +1,6 @@
 import { defineComponent, PropType } from '@vue/composition-api'
 import type { Room } from '~/api/rooms'
+import styles from '~/components/styles.module.css'
 
 export const Rooms = defineComponent({
   props: {
@@ -9,14 +10,18 @@ export const Rooms = defineComponent({
     },
   },
   setup(props) {
-    return () => {
-      ;<div>
+    return () => (
+      <div class={styles.rooms}>
         {props.rooms.map((room) => (
-          <div key={room.roomId} style={{ color: room.color }}>
+          <div
+            class={styles.room}
+            key={room.roomId}
+            style={{ color: room.color }}
+          >
             {room.roomName}
           </div>
         ))}
       </div>
-    }
+    )
   },
 })
