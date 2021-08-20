@@ -1,10 +1,5 @@
 import { mockMethods } from 'aspida-mock'
 import type { Room } from '../@types'
-// export type Room = {
-//   roomId: number
-//   roomName: string
-//   color: string
-// }
 
 export type Methods = {
   get: {
@@ -13,9 +8,45 @@ export type Methods = {
 }
 
 const rooms: Room[] = [
-  { roomId: 0, roomName: 'room1', color: 'blue', cards: [] },
-  { roomId: 1, roomName: 'room2', color: 'green', cards: [] },
-  { roomId: 2, roomName: 'room3', color: 'purple', cards: [] },
+  { 
+    roomId: 0, 
+    roomName: 'room1', 
+    color: '#768EB7', 
+    cards: [
+      {
+        cardId: 0,
+        text: 'カード１',
+        color: '#65A6E8',
+        position: { x: 200, y:100},
+      },
+      {
+        cardId: 0,
+        text: 'カード2',
+        color: '#4182CE',
+        position: { x: 300, y:120},
+      },
+      {
+        cardId: 0,
+        text: 'カード3',
+        color: '#2565B7',
+        position: { x: 400, y:240},
+      },
+    ]
+  },
+  { 
+    roomId: 1, 
+    roomName: 'room2', 
+    color: '#B59599', 
+    cards: [
+      {
+        cardId: 0,
+        text: 'カード１',
+        color: '#4182CE',
+        position: { x: 200, y:100},
+      },
+    ] 
+  },
+  { roomId: 2, roomName: 'room3', color: '#0F5076', cards: [] },
 ]
 
 export default mockMethods<Methods>({
