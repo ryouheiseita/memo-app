@@ -2,7 +2,15 @@
   color: #00f;
 }
 
-.roomswrapper {
-  position: relative;
+.container {
+  display: flex;
+  height: 160px;
+}
+
+.sidewrapper {
   width: 160px;
+}
+
+.boardwrapper {
+  flex: 1;
 }

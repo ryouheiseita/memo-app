@@ -17,3 +17,8 @@
   border-right-style: solid;
   text-align: center;
 }
+
+.boardContainer {
+  height: 100px;
+  background-color: teal;
+}
