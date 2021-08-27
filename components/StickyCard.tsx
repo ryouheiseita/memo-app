@@ -17,6 +17,10 @@ export const StickyCard = defineComponent({
       type: Function as PropType<(text: string) => void>,
       required: true,
     },
+    delete: {
+      type: Function as PropType<() => void>,
+      required: true,
+    },
   },
   setup(props) {
     const isForcusing = ref(false)
@@ -33,6 +37,9 @@ export const StickyCard = defineComponent({
     }
     const onFocus = () => (isForcusing.value = true)
     const onBlur = () => (isForcusing.value = false)
+    const onClick = () => {
+      props.delete()
+    }
 
     return () => (
       <div
@@ -44,6 +51,9 @@ export const StickyCard = defineComponent({
         }}
       >
         <div class={styles.stickyArea} />
+        <button class={styles.deleteBtn} onClick={onClick} type="submit">
+          ×
+        </button>
         <textarea
           style="border:none;"
           class={styles.textArea}
