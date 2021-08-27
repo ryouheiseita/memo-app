@@ -4,12 +4,11 @@ import {
   onMounted,
   ref,
   useContext,
-  useRoute
+  useRoute,
 } from '@nuxtjs/composition-api'
-import type { Room } from '~/api/@types'
-import {Board} from '~/components/Board'
-import {Sideber} from '~/components/Sideber'
-import { room } from '~/components/styles.module.css'
+import type { Card, Room } from '~/api/@types'
+import { Board } from '~/components/Board'
+import { Sideber } from '~/components/Sideber'
 import styles from './styles.module.css'
 
 export type OptionalQuery = {
@@ -27,27 +26,48 @@ export default defineComponent({
       // +でroomIdがnumber型になる。
       return isNaN(+roomId) ? undefined : +roomId
     })
-
+    // const update = async (cardId: Card: Card[''])
+    const cardId = computed(() => {
+      const { cardId } = route.value.query
+      return isNaN(+cardId) ? undefined : +cardId
+    })
 
     onMounted(async () => {
       rooms.value = await ctx.$api.rooms.$get()
+      console.log(rooms.value, 'rooms')
+      console.log(roomId, 'roomId')
     })
 
-    return () => 
+    const updateCard = async (cardId: Card['cardId'], text: string) => {
+      const validateRoomId = roomId.value
+      if (validateRoomId === undefined) return
+
+      await ctx.$api.rooms
+        ._roomId(validateRoomId)
+        .cards._cardId(cardId)
+        .$patch({ body: { text } })
+
+      rooms.value = await ctx.$api.rooms.$get()
+    }
+
+    return () =>
       rooms.value ? (
-      <div class={styles.container}>
-        <div class={styles.sidewrapper}>
-          {/* 二項演算子⇨room.valueに値が入っている時Sideberのroomsに値を入れる。||の場合逆の処理になる */}
-          {rooms.value && <Sideber rooms={rooms.value} />}
+        <div class={styles.container}>
+          <div class={styles.sidewrapper}>
+            {/* 二項演算子⇨room.valueに値が入っている時Sideberのroomsに値を入れる。||の場合逆の処理になる */}
+            {rooms.value && <Sideber rooms={rooms.value} />}
+          </div>
+          <div class={styles.boardwrapper}>
+            {roomId.value !== undefined && (
+              <Board
+                cards={rooms.value[roomId.value].cards}
+                input={updateCard}
+              />
+            )}
+          </div>
         </div>
-        <div class={styles.boardwrapper}>
-          {roomId.value !== undefined && (
-            <Board cards={rooms.value[roomId.value].cards} />
-          )}
-        </div>
-      </div>
-    ) : (
-      <div> Loading... </div>
-    )
+      ) : (
+        <div> Loading... </div>
+      )
   },
 })
