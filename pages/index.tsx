@@ -62,6 +62,14 @@ export default defineComponent({
       rooms.value = await ctx.$api.rooms.$get()
     }
 
+    const addCard = async () => {
+      const validateRoomId = roomId.value
+      if (validateRoomId === undefined) return
+      await ctx.$api.rooms._roomId(validateRoomId).cards.$post()
+
+      rooms.value = await ctx.$api.rooms.$get()
+    }
+
     return () =>
       rooms.value ? (
         <div class={styles.container}>
@@ -75,6 +83,7 @@ export default defineComponent({
                 cards={rooms.value[roomId.value].cards}
                 input={updateCard}
                 delete={deleteCard}
+                add={addCard}
               />
             )}
           </div>
